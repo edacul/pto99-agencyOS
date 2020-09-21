@@ -1,64 +1,21 @@
 const axios = require('axios');
 
-// get coda data functions
+const baseURL = "https://coda.io/apis/v1";
 
-// get table columns
+const accesToken = "80378f43-df21-4d37-a93c-1a8de0042846"; 
 
-const getCodaColumn = function getCodaColumn (table){
-    axios.get(
-        `https://coda.io/apis/v1beta1/docs/Iw5mBxlHw1/tables/${table}/columns`,
-        {
-            headers: {
-              'Authorization': 'Bearer 80378f43-df21-4d37-a93c-1a8de0042846'
-            }})
-        .then (
-            async function (response) {
-                console.log (await response.data.items.length)
-            }
-        )
-}
-    
-// get table rows
-
-const getCodaRows = function (limit) {
-    axios.get(
-        `https://coda.io/apis/v1beta1/docs/Iw5mBxlHw1/tables/grid-CzvDuUAfRP/rows?${limit}`, 
+const getCodaRows = async function (docId, tableId , limit) {
+    let res = axios.get(
+        `${baseURL}/docs/${docId}/tables/${tableId}/rows?useColumnNames=true&${limit}`, 
         {
         headers: {
-          'Authorization': 'Bearer 80378f43-df21-4d37-a93c-1a8de0042846'
+          'Authorization': `Bearer ${accesToken}`
         }})
-      .then((res) => {console.log(res.data)})
+      .then((res) => {return res})
       .catch((err) => {
           console.log(err);
       });
+      return res;
 }
 
-const postCodaRows = function (query, callback, page){
-    axios.get(
-        page || `https://coda.io/apis/v1beta1/docs/Iw5mBxlHw1/tables/grid-CzvDuUAfRP/rows?useColumnNames=true&${query}`, 
-        {
-        headers: {
-          'Authorization': 'Bearer 80378f43-df21-4d37-a93c-1a8de0042846'
-        }})
-      .then(async function(response) {
-        if (response.data.items.length > 499) {
-            console.log('iterating new records')
-            response.data.items.forEach(callback);
-            postCodaRows(query, callback, response.data.nextPageLink)
-
-        }
-        if (response.data.items.length < 500) {
-            response.data.items.forEach(callback);
-            console.log('last page saved')
-        }
-      })
-      .catch((err) => {
-          console.log(err);
-      });
-}
-
-
-module.exports.getcodacolumn = getCodaColumn;
-
-module.exports.getcodarows = getCodaRows;
-module.exports.postcodarows = postCodaRows;
+module.exports.getCodaRows = getCodaRows;

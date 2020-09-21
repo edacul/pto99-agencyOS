@@ -21,7 +21,7 @@ const rowSchema = new mongoose.Schema({
     href: String,
     createdAt: Date,
     date_reported: Date,
-  }, {strict: true}
+  }, {strict: true, collection: 'reportedTasks'}
 );
 
 const Row = mongoose.model('Row', rowSchema);

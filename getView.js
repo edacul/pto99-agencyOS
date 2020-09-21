@@ -4,7 +4,7 @@ const assert = require('assert');
   
 const getView = async function (filterOptions, groupingOptions) {
     const client = new MongoClient(
-        'mongodb+srv://nest:holanest@cerebro-wdydz.mongodb.net/CEREBRO?retryWrites=true&w=majority',
+        'mongodb+srv://nest:holanest@cerebro.wdydz.mongodb.net/CEREBRO?retryWrites=true&w=majority',
         { useNewUrlParser: true, useUnifiedTopology: true }
     );
     const connection = await client.connect();
@@ -12,7 +12,7 @@ const getView = async function (filterOptions, groupingOptions) {
     console.log(filter)
     const grouper = await groupingOptions;
     const db = connection.db('CEREBRO');
-    const collection = db.collection('rows');
+    const collection = db.collection('reportedTasks');
 
     if (!filter && !grouper) {
         const cursor = collection.aggregate();
@@ -44,11 +44,11 @@ const buildAggregate = async function (filterOpt, aggOpt) {
 }
 
 const getFilter = async function (filterObject) {
-    const client = new MongoClient('mongodb+srv://nest:holanest@cerebro-wdydz.mongodb.net/CEREBRO?retryWrites=true&w=majority',
+    const client = new MongoClient('mongodb+srv://nest:holanest@cerebro.wdydz.mongodb.net/CEREBRO?retryWrites=true&w=majority',
     { useNewUrlParser: true, useUnifiedTopology: true });
     const connection = await client.connect();
     const db = connection.db('CEREBRO');
-    const collection = db.collection('rows');
+    const collection = db.collection('reportedTasks');
     let aggregator = await filter(filterObject.type,filterObject.value);
     const cursor = collection.aggregate(aggregator);
     return cursor.toArray();

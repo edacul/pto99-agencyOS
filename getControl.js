@@ -1,6 +1,6 @@
 const config = require ('./config');
 const axios = require('axios');
-const uri = `https://coda.io/apis/v1beta1/docs/${config.reportCodaDoc}/controls/`
+const uri = `https://coda.io/apis/v1/docs/${config.reportCodaDoc}/controls/`
 
 const getControl = async function (controlUID) {
     let data = await axios.get(

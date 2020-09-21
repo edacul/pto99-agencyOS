@@ -39,7 +39,7 @@ let filterArray = await buildFilterArray(dashboard);
 let view = await getView(filterArray, grouping);
 let body = buildBody(byBrandTableMap, view);
 axios.post(
-  `https://coda.io/apis/v1beta1/docs/${doc}/tables/${table}/rows?disableParsing=true`,
+  `https://coda.io/apis/v1/docs/${doc}/tables/${table}/rows?disableParsing=true`,
   await body,
   { headers: {
     'Authorization': 'Bearer 80378f43-df21-4d37-a93c-1a8de0042846' },
